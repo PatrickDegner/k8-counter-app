@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: counter-app-deployment
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: counter-app
+  template:
+    metadata:
+      labels:
+        app: counter-app
+    spec:
+      containers:
+      - name: backend-container
+        image: patrickdeg/counter-backend:latest
+        ports:
+        - containerPort: 8000
