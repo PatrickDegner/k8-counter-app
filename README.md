@@ -128,3 +128,5 @@ The application consists of three main components:
 - Jinja2
 - requests
 - mysql-connector-python
+
+![image](https://github.com/user-attachments/assets/84623e2f-3548-477e-8f01-cca065c825c4)
