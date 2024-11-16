@@ -22,7 +22,20 @@ The application consists of three main components:
      kubectl config set-context --current --namespace=counter-app
      ```
 
-2. **Database Initialization:**
+2. **Deploy the Database:**
+   - Apply the YAML files for the database:
+     ```bash
+     kubectl apply -f counter-db/pv-claim.yaml
+     kubectl apply -f counter-db/deployment.yaml
+     kubectl apply -f counter-db/service.yaml
+     ```
+   - **Wait for the database to be ready:**
+     ```bash
+     kubectl wait --for=condition=ready pod -l app=counter-db --timeout=120s
+     ```
+     This command waits for the database pod to become ready before proceeding.
+
+3. **Database Initialization:**
    - **Port Forwarding:**
       -  Forward the port from your local machine to the `counter-db` pod:
          ```bash
@@ -49,7 +62,7 @@ The application consists of three main components:
         INSERT INTO counter_table(id, count) VALUES (1, 0);
         ```
 
-3. **Build and Push Docker Images:**
+4. **Build and Push Docker Images:**
    - **Build:**
       - Navigate to each component directory (`counter-backend` and `counter-frontend`) and build the Docker images, replacing `<your-dockerhub-username>` with your Docker Hub username:
          ```bash
@@ -65,17 +78,16 @@ The application consists of three main components:
    - **Update Deployment YAMLs:**
       - In `counter-backend/deployment.yaml` and `counter-frontend/deployment.yaml`, replace `patrickdeg/counter-backend:latest` and `patrickdeg/counter-frontend:latest` with your Docker Hub image URLs (e.g., `<your-dockerhub-username>/counter-backend:latest`).
 
-4. **Kubernetes Deployment:**
-   - Apply the Kubernetes YAML files in the following order:
-      - `kubectl apply -f counter-db/pv-claim.yaml`
-      - `kubectl apply -f counter-db/deployment.yaml`
-      - `kubectl apply -f counter-db/service.yaml`
-      - `kubectl apply -f counter-backend/deployment.yaml`
-      - `kubectl apply -f counter-backend/service.yaml`
-      - `kubectl apply -f counter-frontend/deployment.yaml`
-      - `kubectl apply -f counter-frontend/service.yaml`
+5. **Deploy the Backend and Frontend:**
+   - Apply the YAML files for the backend and frontend:
+     ```bash
+     kubectl apply -f counter-backend/deployment.yaml
+     kubectl apply -f counter-backend/service.yaml
+     kubectl apply -f counter-frontend/deployment.yaml
+     kubectl apply -f counter-frontend/service.yaml
+     ```
 
-5. **Access the Application:**
+6. **Access the Application:**
    - Find the external IP or NodePort of the `frontend-service` using `kubectl get services`.
    - Open a web browser and navigate to the application URL (e.g., `http://<external-ip>:<nodeport>/`).
 
@@ -86,7 +98,7 @@ The application consists of three main components:
 - **`main.py`:**  
     - Uses FastAPI to create an API endpoint.
     - Connects to the MySQL database using environment variables for connection details.
-    - Increments the counter in the `counter-table`.
+    - Increments the counter in the `counter_table`.
     - Retrieves the updated counter value.
     - Returns the counter value, pod hostname, and pod IP address in JSON format.
 
