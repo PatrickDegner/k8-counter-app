@@ -12,7 +12,17 @@ The application consists of three main components:
 
 ## Setup and Deployment
 
-1. **Database Initialization:**
+1. **Create a Namespace:**
+   - Create a new namespace called `counter-app`:
+     ```bash
+     kubectl create namespace counter-app
+     ```
+   - Switch to the `counter-app` namespace:
+     ```bash
+     kubectl config set-context --current --namespace=counter-app
+     ```
+
+2. **Database Initialization:**
    - **Port Forwarding:**
       -  Forward the port from your local machine to the `counter-db` pod:
          ```bash
@@ -39,7 +49,7 @@ The application consists of three main components:
         INSERT INTO counter_table(id, count) VALUES (1, 0);
         ```
 
-2. **Build and Push Docker Images:**
+3. **Build and Push Docker Images:**
    - **Build:**
       - Navigate to each component directory (`counter-backend` and `counter-frontend`) and build the Docker images, replacing `<your-dockerhub-username>` with your Docker Hub username:
          ```bash
@@ -55,7 +65,7 @@ The application consists of three main components:
    - **Update Deployment YAMLs:**
       - In `counter-backend/deployment.yaml` and `counter-frontend/deployment.yaml`, replace `patrickdeg/counter-backend:latest` and `patrickdeg/counter-frontend:latest` with your Docker Hub image URLs (e.g., `<your-dockerhub-username>/counter-backend:latest`).
 
-3. **Kubernetes Deployment:**
+4. **Kubernetes Deployment:**
    - Apply the Kubernetes YAML files in the following order:
       - `kubectl apply -f counter-db/pv-claim.yaml`
       - `kubectl apply -f counter-db/deployment.yaml`
@@ -65,7 +75,7 @@ The application consists of three main components:
       - `kubectl apply -f counter-frontend/deployment.yaml`
       - `kubectl apply -f counter-frontend/service.yaml`
 
-4. **Access the Application:**
+5. **Access the Application:**
    - Find the external IP or NodePort of the `frontend-service` using `kubectl get services`.
    - Open a web browser and navigate to the application URL (e.g., `http://<external-ip>:<nodeport>/`).
 
@@ -76,7 +86,7 @@ The application consists of three main components:
 - **`main.py`:**  
     - Uses FastAPI to create an API endpoint.
     - Connects to the MySQL database using environment variables for connection details.
-    - Increments the counter in the `counter_table`.
+    - Increments the counter in the `counter-table`.
     - Retrieves the updated counter value.
     - Returns the counter value, pod hostname, and pod IP address in JSON format.
 
