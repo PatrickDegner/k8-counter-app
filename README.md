@@ -1,4 +1,4 @@
-# Hit Counter App
+# Hit Counter App on Kubernetes
 
 This application demonstrates a simple hit counter using a Python backend with FastAPI, a MySQL database, and a Python frontend, all deployed on Kubernetes.
 
