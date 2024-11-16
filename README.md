@@ -26,8 +26,8 @@ The application consists of three main components:
    - Apply the YAML files for the database:
      ```bash
      kubectl apply -f counter-db/pv-claim.yaml
-     kubectl apply -f counter-db/deployment.yaml
      kubectl apply -f counter-db/service.yaml
+     kubectl apply -f counter-db/deployment.yaml
      ```
    - **Wait for the database to be ready:**
      ```bash
@@ -81,10 +81,10 @@ The application consists of three main components:
 5. **Deploy the Backend and Frontend:**
    - Apply the YAML files for the backend and frontend:
      ```bash
-     kubectl apply -f counter-backend/deployment.yaml
      kubectl apply -f counter-backend/service.yaml
-     kubectl apply -f counter-frontend/deployment.yaml
      kubectl apply -f counter-frontend/service.yaml
+     kubectl apply -f counter-backend/deployment.yaml
+     kubectl apply -f counter-frontend/deployment.yaml
      ```
 
 6. **Access the Application:**
